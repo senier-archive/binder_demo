@@ -1,25 +1,27 @@
-cc_binary {
-    name: "ipc_client",
-    srcs: [
-        "Client.cpp",
-        "com/componolit/example/IExample.aidl"
-    ],
-    shared_libs: [
+cc_defaults {
+   name: "ipc_demo_defaults",
+   srcs: [
+        "com/componolit/example/IExample.aidl",
+        "com/componolit/example/ICallback.aidl"
+   ],
+   shared_libs: [
       "libbase",
       "libutils",
       "libbinder"
-    ],
+   ],
+   aidl: {
+      local_include_dirs: ["."]
+   }
 }
 
 cc_binary {
-    name: "ipc_server",
-    srcs: [
-        "Server.cpp",
-        "com/componolit/example/IExample.aidl"
-    ],
-    shared_libs: [
-      "libbase",
-      "libutils",
-      "libbinder"
-    ],
+    name: "ipc_client",
+    defaults: ["ipc_demo_defaults"],
+    srcs: ["Client.cpp"],
+}
+
+cc_binary {
+   name: "ipc_server",
+   defaults: ["ipc_demo_defaults"],
+   srcs: ["Server.cpp"],
 }

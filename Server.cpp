@@ -8,20 +8,44 @@
 
 #include "binder_demo.h"
 
+#define UNUSED __attribute__((unused))
+
 using namespace com::componolit::example;
 using namespace android;
 
 class Example : public BnExample {
-   virtual binder::Status add(int32_t a, int32_t b, int32_t *result) {
+
+   virtual binder::Status add(int32_t a,
+                              int32_t b,
+                              int32_t *result)
+   {
       printf("add %d + %d\n", a, b);
       *result = a + b;
+      return binder::Status::ok();
+   }
+
+   virtual binder::Status write(UNUSED const String16& data,
+                                UNUSED const base::unique_fd& fd)
+   {
+      return binder::Status::ok();
+   }
+
+   virtual binder::Status callback(UNUSED const sp<ICallback>& cb)
+   {
+      return binder::Status::ok();
+   }
+
+   virtual binder::Status callback_fd(UNUSED const sp<ICallback>& cb,
+                                      UNUSED const String16& data,
+                                      UNUSED const base::unique_fd& fd)
+   {
       return binder::Status::ok();
    }
 };
 
 extern "C"
-int main (int    argc __attribute__((unused)),
-          char **argv __attribute__((unused)))
+int main (UNUSED int    argc,
+          UNUSED char **argv)
 {
    defaultServiceManager()->addService(String16(SERVICE_NAME), new Example());
    ProcessState::self()->startThreadPool();

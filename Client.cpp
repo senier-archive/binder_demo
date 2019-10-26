@@ -36,6 +36,6 @@ int main (int argc __attribute__((unused)),
    int b = 13;
    int r;
 
-   iface->add(a, b, &r)
+   iface->add(a, b, &r);
    printf("Client: %d+%d=%d\n", a, b, r);
 }
