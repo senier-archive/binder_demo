@@ -10,3 +10,16 @@ cc_binary {
       "libbinder"
     ],
 }
+
+cc_binary {
+    name: "ipc_server",
+    srcs: [
+        "Server.cpp",
+        "com/componolit/example/IExample.aidl"
+    ],
+    shared_libs: [
+      "libbase",
+      "libutils",
+      "libbinder"
+    ],
+}
