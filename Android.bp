@@ -1,0 +1,12 @@
+cc_binary {
+    name: "ipc_client",
+    srcs: [
+        "Client.cpp",
+        "com/componolit/example/IExample.aidl"
+    ],
+    shared_libs: [
+      "libbase",
+      "libutils",
+      "libbinder"
+    ],
+}
