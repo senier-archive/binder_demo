@@ -36,12 +36,31 @@ Keep the server running and open a second shell using adb:
 ```sh
 $ adb shell
 generic_x86_64:/ $ /data/local/tmp/ipc_client
-Client: 5+13=18
-generic_x86_64:/ $
+[==========] Running 4 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 4 tests from IPCTest
+[ RUN      ] IPCTest.Scenario1
+[       OK ] IPCTest.Scenario1 (2 ms)
+[ RUN      ] IPCTest.Scenario2
+[       OK ] IPCTest.Scenario2 (2 ms)
+[ RUN      ] IPCTest.Scenario3
+[       OK ] IPCTest.Scenario3 (1 ms)
+[ RUN      ] IPCTest.Scenario4
+[       OK ] IPCTest.Scenario4 (1 ms)
+[----------] 4 tests from IPCTest (6 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test case ran. (7 ms total)
+[  PASSED  ] 4 tests.
 ```
 
 Meanwhile the server outputs:
 
 ```sh
 add 5 + 13
+write
+callback
+callback_fd
+write
+callback
 ```
