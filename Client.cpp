@@ -6,6 +6,7 @@
 #include <utils/RefBase.h>
 #include <binder/IServiceManager.h>
 #include <com/componolit/example/IExample.h>
+#include <com/componolit/example/BnCallback.h>
 
 #include <gtest/gtest.h>
 
@@ -41,6 +42,19 @@ private:
    }
 };
 
+class Cb : public BnCallback {
+   int r_ = 0;
+   virtual binder::Status result(int r) {
+      r_ = r;
+      return binder::Status::ok();
+   }
+public:
+   Cb(int value) : r_(value) { };
+   int get_r() {
+      return r_;
+   }
+};
+
 TEST_F(IPCTest, Scenario1) {
    int r;
    iface->add(5, 13, &r);
@@ -55,7 +69,7 @@ TEST_F(IPCTest, Scenario2) {
    ASSERT_NE(rv, -1) << "Error writing file";
 
    binder::Status status = iface->write(String16("PART2"), tf);
-   ASSERT_TRUE(status.isOk()) << "Error calling write interface";
+   ASSERT_TRUE(status.isOk()) << "Error calling write method";
 
    off_t off = lseek(tf.get(), 0, SEEK_SET);
    ASSERT_NE(off, -1) << "Error resetting file";
@@ -70,9 +84,17 @@ TEST_F(IPCTest, Scenario2) {
    ASSERT_EQ(result, "PART1PART2") << "Invalid content";
 }
 
+TEST_F(IPCTest, Scenario3) {
+   enum { INITIAL_VALUE = 4532, TEST_VALUE = 1234 };
+   Cb *cb = new Cb(INITIAL_VALUE);
+   ASSERT_EQ(cb->get_r(), INITIAL_VALUE);
+   binder::Status status = iface->callback(cb, TEST_VALUE);
+   ASSERT_TRUE(status.isOk()) << "Error calling callback method";
+   ASSERT_EQ(cb->get_r(), TEST_VALUE);
+}
+
 int main (int argc, char **argv)
 {
-   printf("Client test started\n");
    ::testing::InitGoogleTest(&argc, argv);
    return RUN_ALL_TESTS();
 }

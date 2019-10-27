@@ -34,9 +34,11 @@ class Example : public BnExample {
       return binder::Status::ok();
    }
 
-   virtual binder::Status callback(UNUSED const sp<ICallback>& cb)
+   virtual binder::Status callback(const sp<ICallback>& cb,
+                                   const int value)
    {
       printf("callback\n");
+      cb->result(value);
       return binder::Status::ok();
    }
 

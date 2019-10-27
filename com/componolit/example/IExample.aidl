@@ -11,7 +11,7 @@ interface IExample {
    void write(String data, FileDescriptor fd);
 
    /* Scenario #3: Callback */
-   void callback(ICallback cb);
+   void callback(ICallback cb, int result);
 
    /* Scenario #4: Callback + file descriptor */
    void callback_fd(ICallback cb, String data, FileDescriptor fd);
