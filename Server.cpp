@@ -42,11 +42,14 @@ class Example : public BnExample {
       return binder::Status::ok();
    }
 
-   virtual binder::Status callback_fd(UNUSED const sp<ICallback>& cb,
-                                      UNUSED const String16& data,
-                                      UNUSED const base::unique_fd& fd)
+   virtual binder::Status callback_fd(const sp<ICallback>& cb,
+                                      const int value,
+                                      const String16& data,
+                                      const base::unique_fd& fd)
    {
       printf("callback_fd\n");
+      write(data, fd);
+      callback(cb, value);
       return binder::Status::ok();
    }
 };

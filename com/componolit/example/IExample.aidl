@@ -14,5 +14,5 @@ interface IExample {
    void callback(ICallback cb, int result);
 
    /* Scenario #4: Callback + file descriptor */
-   void callback_fd(ICallback cb, String data, FileDescriptor fd);
+   void callback_fd(ICallback cb, int result, String data, FileDescriptor fd);
 }

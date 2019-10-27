@@ -93,6 +93,34 @@ TEST_F(IPCTest, Scenario3) {
    ASSERT_EQ(cb->get_r(), TEST_VALUE);
 }
 
+TEST_F(IPCTest, Scenario4) {
+   enum { INITIAL_VALUE = 9887, TEST_VALUE = 4834 };
+   Cb *cb = new Cb(INITIAL_VALUE);
+   ASSERT_EQ(cb->get_r(), INITIAL_VALUE);
+
+   base::unique_fd tf = openTempFile();
+   ASSERT_NE(tf.get(), -1) << "Error opening temporary file";
+
+   int rv = write(tf.get(), "ABCDE", 5);
+   ASSERT_NE(rv, -1) << "Error writing file";
+
+   binder::Status status = iface->callback_fd(cb, TEST_VALUE, String16("FGHIJ"), tf);
+   ASSERT_TRUE(status.isOk()) << "Error calling callback_fd method";
+
+   off_t off = lseek(tf.get(), 0, SEEK_SET);
+   ASSERT_NE(off, -1) << "Error resetting file";
+
+   char data[11];
+   ssize_t size = read(tf.get(), (void *)&data, 10);
+   data[10] = 0;
+   ASSERT_NE(size, -1) << "Error reading file";
+   ASSERT_EQ(size, 10) << "Invalid content length";
+
+   std::string result(data, 10);
+   ASSERT_EQ(result, "ABCDEFGHIJ") << "Invalid content";
+   ASSERT_EQ(cb->get_r(), TEST_VALUE);
+}
+
 int main (int argc, char **argv)
 {
    ::testing::InitGoogleTest(&argc, argv);
