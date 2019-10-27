@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/Status.h>
@@ -27,11 +28,15 @@ class Example : public BnExample {
    virtual binder::Status write(UNUSED const String16& data,
                                 UNUSED const base::unique_fd& fd)
    {
+      printf("write\n");
+      String8 s(data);
+      ::write(fd.get(), s.string(), s.size());
       return binder::Status::ok();
    }
 
    virtual binder::Status callback(UNUSED const sp<ICallback>& cb)
    {
+      printf("callback\n");
       return binder::Status::ok();
    }
 
@@ -39,6 +44,7 @@ class Example : public BnExample {
                                       UNUSED const String16& data,
                                       UNUSED const base::unique_fd& fd)
    {
+      printf("callback_fd\n");
       return binder::Status::ok();
    }
 };
