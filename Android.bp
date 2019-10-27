@@ -14,7 +14,7 @@ cc_defaults {
    }
 }
 
-cc_binary {
+cc_test {
     name: "ipc_client",
     defaults: ["ipc_demo_defaults"],
     srcs: ["Client.cpp"],

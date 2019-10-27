@@ -17,7 +17,7 @@ $ mmm external/binder_demo
 Install resulting binaries to device or emulator:
 
 ```sh
-$ adb push out/target/product/generic_x86_64/system/bin/ipc_* /data/local/tmp/
+$ adb push out/target/product/generic_x86_64/system/bin/ipc_server out/target/product/generic_x86_64/testcases/ipc_client/x86_64/ipc_client /data/local/tmp/
 ```
 
 # Running server
